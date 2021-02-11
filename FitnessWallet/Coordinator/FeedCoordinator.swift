@@ -9,6 +9,7 @@ import UIKit
 
 protocol FeedCoordinatorProtocol: TabItemCoordinatorProtocol {
     func logout()
+    func showCustomerProfileView(with model: DataItem)
 }
 
 final class FeedCoordinator: FeedCoordinatorProtocol {
@@ -20,7 +21,7 @@ final class FeedCoordinator: FeedCoordinatorProtocol {
         self.navigationController = navigationController
     }
     
-    func start(){
+    func start() {
         let viewModel = MainViewModel(coordinator: self)
         let controller = MainViewController(with: viewModel)
         navigationController.pushViewController(controller, animated: true)
@@ -31,3 +32,20 @@ final class FeedCoordinator: FeedCoordinatorProtocol {
     }
 }
 
+extension FeedCoordinator {
+    
+    func showCustomerProfileView(with model: DataItem) {
+        let viewModel = CustomerProfileViewModel(with: model)
+        switch model {
+        case .exercises(let customer):
+            viewModel.fetchDataClosure?(customer)
+        case .customers(let customer):
+            viewModel.fetchDataClosure?(customer)
+        case .remaining(let customer):
+            viewModel.fetchDataClosure?(customer)
+        }
+        let controller = CustomerProfileViewController(with: viewModel)
+        controller.hidesBottomBarWhenPushed = true
+        navigationController.pushViewController(controller, animated: true)
+    }
+}

@@ -20,7 +20,6 @@ final class CustomerBackgroundDecoration: UICollectionReusableView {
     }
     
     override func draw(_ rect: CGRect) {
-        
         guard let context = UIGraphicsGetCurrentContext() else { return }
         context.clear(rect)
         let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -31,5 +30,3 @@ final class CustomerBackgroundDecoration: UICollectionReusableView {
         context.drawLinearGradient(gradient, start: CGPoint(x: 0, y: bounds.minY), end: CGPoint(x: 0, y: bounds.maxY), options: [])
     }
 }
-
-//secondarySystemGroupedBackground

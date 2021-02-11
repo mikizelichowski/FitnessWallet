@@ -6,6 +6,7 @@
 //
 
 protocol NotificationCoordinatorProtocol: TabItemCoordinatorProtocol {
+    func presentNotificationViewController()
 }
 
 final class NotificationCoordinator: NotificationCoordinatorProtocol {
@@ -21,8 +22,7 @@ final class NotificationCoordinator: NotificationCoordinatorProtocol {
         test()
     }
     
-    // do poprawy stars na start!
-    func starts(){
+    func presentNotificationViewController() {
         let viewModel = NotificationViewModel(coordinate: self)
         let controller = NotificationViewController(with: viewModel)
         navigationController.pushViewController(controller, animated: true)

@@ -25,7 +25,6 @@ struct SectionModel: Hashable {
     }
 }
 
-
 enum Section: Int, CaseIterable, Hashable {
     case training
     case customerList

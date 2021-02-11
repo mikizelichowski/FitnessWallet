@@ -24,11 +24,8 @@ final class TrainingViewController: UIViewController {
     override func viewDidLoad() {
     super.viewDidLoad()
         view.backgroundColor = .red
-        
-        CustomerService.getUser()
     }
 }
 
 extension TrainingViewController: TrainingViewModelDelegate {
-    
 }

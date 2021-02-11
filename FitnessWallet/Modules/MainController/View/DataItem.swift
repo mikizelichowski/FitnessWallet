@@ -15,8 +15,8 @@ struct Model: Hashable {
         self.dataItem = dataItem
     }
     
-    static func == (left: Model, right: Model) -> Bool {
-        left.identifier == right.identifier
+    static func == (lhs: Model, rhs: Model) -> Bool {
+        lhs.identifier == rhs.identifier
     }
     
     func hash(into hasher: inout Hasher) {

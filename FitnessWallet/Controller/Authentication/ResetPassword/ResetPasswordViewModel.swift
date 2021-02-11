@@ -58,7 +58,6 @@ extension ResetPasswordViewModel: ResetPasswordViewModelProtocol {
             print("DBEUG: check your email address")
             self.showLoginView()
 //             alert : check your email
-            
         }
     }
     

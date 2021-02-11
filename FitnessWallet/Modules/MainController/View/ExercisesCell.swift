@@ -43,10 +43,8 @@ final class ExercisesCell: UICollectionViewCell {
     }
     
     private func setupLayout() {
-//        backgroundColor = .white
-//        layer.addShadow(type: .cell)
         setupCell()
-        separator.backgroundColor = .quaternaryLabel
+        separator.backgroundColor = .white
         separator.setHeight(CGFloat(StringRepresentationOfDigit.two))
         spacer.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         spacer.setContentHuggingPriority(.defaultLow, for: .vertical)

@@ -5,12 +5,16 @@
 //  Created by Mikolaj Zelichowski on 08/01/2021.
 //
 
+#warning(" Fix it later !")
+
 import UIKit
 
 final class ResetPasswordView: UIViewController {
     private enum Constants {
         static let magicNumber32: CGFloat = 32.0
         static let magicNumber120: CGFloat = 120.0
+        static let stackViewHeight: CGFloat = 250.0
+        static let paddingTop: CGFloat = 50.0
     }
     
     private let backgroundView = UIView()
@@ -51,10 +55,10 @@ final class ResetPasswordView: UIViewController {
                            left: backgroundView.leftAnchor,
                            bottom: backgroundView.bottomAnchor,
                            right: backgroundView.rightAnchor,
-                           paddingTop: 100,
-                           paddingLeft: 32,
-                           paddingBottom: 100,
-                           paddingRight: 32)
+                           paddingTop: CGFloat(StringRepresentationOfDigit.hundred),
+                           paddingLeft: Constants.magicNumber32,
+                           paddingBottom: CGFloat(StringRepresentationOfDigit.hundred),
+                           paddingRight: Constants.magicNumber32)
         contentView.backgroundColor = .white
         contentView.layer.masksToBounds = true
         contentView.layer.cornerRadius = CGFloat(StringRepresentationOfDigit.twelve)
@@ -63,20 +67,20 @@ final class ResetPasswordView: UIViewController {
         [backButton, contentStackView].forEach { contentView.addSubview($0)}
         backButton.anchor(top: contentView.topAnchor,
                           left: contentView.leftAnchor,
-                          paddingTop: 16,
-                          paddingLeft: 16)
+                          paddingTop: CGFloat(StringRepresentationOfDigit.sixteen),
+                          paddingLeft: CGFloat(StringRepresentationOfDigit.sixteen))
         contentStackView.addArrangedSubview(emailTextField)
         contentStackView.addArrangedSubview(resetButton)
         contentStackView.axis = .vertical
-        contentStackView.spacing = 5
+        contentStackView.spacing = CGFloat(StringRepresentationOfDigit.five)
         contentStackView.anchor(top: contentView.topAnchor,
                                 left: contentView.leftAnchor,
                                 bottom: contentView.bottomAnchor,
                                 right: contentView.rightAnchor,
-                                paddingTop: 50,
-                                paddingLeft: 5,
-                                paddingRight: 5)
-        contentStackView.setHeight(250)
+                                paddingTop: Constants.paddingTop,
+                                paddingLeft: CGFloat(StringRepresentationOfDigit.five),
+                                paddingRight: CGFloat(StringRepresentationOfDigit.five))
+        contentStackView.setHeight(Constants.stackViewHeight)
     }
     
     private func setupLabels() {
@@ -89,7 +93,6 @@ final class ResetPasswordView: UIViewController {
         backButton.setTitle("X", for: .normal)
         backButton.titleLabel?.font = .font(with: .heavy, size: .giant)
         backButton.addTarget(self, action: #selector(dismissBackButton), for: .touchUpInside)
-        
         resetButton.setup(title: viewModel.resetButtonTitle, style: .acceptBottom)
     }
     
@@ -107,7 +110,5 @@ final class ResetPasswordView: UIViewController {
 
 extension ResetPasswordView: ResetPasswordViewModelDelegate {
     func updateForm() {
-        
     }
-    
 }

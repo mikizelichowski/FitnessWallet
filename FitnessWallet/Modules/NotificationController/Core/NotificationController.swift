@@ -11,7 +11,6 @@ import Firebase
 final class NotificationViewController: UIViewController {
     
     var viewModel: NotificationViewModelProtocol
-    var customers = [Customers]()
     
     init(with viewModel: NotificationViewModelProtocol) {
         self.viewModel = viewModel
@@ -24,19 +23,8 @@ final class NotificationViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-    super.viewDidLoad()
+        super.viewDidLoad()
         view.backgroundColor = .red
-        
-        CustomerService.fetchCustomers { result in
-            switch result {
-            
-            case .success(let customers):
-                self.customers = customers
-                print("DEBUG: fetch customers list \(customers)")
-            case .failure(let err):
-                print("DEBUG: Failed fetch customers \(err.localizedDescription)")
-            }
-        }
     }
 }
 

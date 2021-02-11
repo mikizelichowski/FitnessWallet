@@ -6,7 +6,11 @@
 //
 
 import UIKit
-import Combine
+
+enum AccountState {
+    case existingUser
+    case newUser
+}
 
 protocol LoginViewModelProtocol: class {
     var delegate: LoginViewModelDelegate! { get set }
@@ -30,6 +34,7 @@ final class LoginViewModel {
     weak var delegate: LoginViewModelDelegate!
     
     private var coordinator: LoginCoordinatorProtocol
+    private var accountState: AccountState = .existingUser
     
     let loginRenderable = InputView.Renderable(type: .email,
                                                title: Localized.LoginView.TextTitle.emailTitle,
@@ -65,22 +70,26 @@ extension LoginViewModel: LoginViewModelProtocol {
     }
     
     func login(email: String?, password: String?) {
-        delegate.updateForm()
-        guard let email = email,
-              let password = password else { return }
-        delegate.showLoading(true)
-        AuthService.loginUser(withEmail: email, password: password) { result, error in
-            self.delegate.showLoading(false)
-            if let error = error {
-                print("DEBUG: Failed to log user in \(error.localizedDescription)")
-                return
+        if accountState == .existingUser {
+            delegate.updateForm()
+            guard let email = email,
+                  let password = password else { return }
+            delegate.showLoading(true)
+            AuthService.loginUser(withEmail: email, password: password) { result, error in
+                self.delegate.showLoading(false)
+                if let error = error {
+                    print("\(ErrorAPI.logIn) \(error.localizedDescription)")
+                    
+                    return
+                }
+                // self.authentication.authenticationDidComplete()
+                DispatchQueue.main.async {
+                    self.coordinator.showMainController()
+                }
             }
-            print("DEBUG: Successfully log In ! ")
-            // self.authentication.authenticationDidComplete()
-            self.coordinator.showMainController()
         }
     }
-     
+    
     func showRegisterView() {
         coordinator.showRegisterController()
     }

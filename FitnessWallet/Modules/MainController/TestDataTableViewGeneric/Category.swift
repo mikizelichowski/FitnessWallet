@@ -8,11 +8,11 @@
 import Foundation
 
 enum Category: String, CaseIterable {
-    case running = "Running"
-    case technology = "Technology"
-    case education = "Education"
-    case health = "Health"
-    case household = "Household"
+    case crossfit = "Crossfit"
+    case chest = "Chest exercises"
+    case legs = "Legs exercises"
+    case back = "Back exercises"
+    case arms = "Arms exercises"
     case triathlon = "Triathlon"
-    case shoppingCart = "Cart"
+    case shoppingCart = "Supplements"
 }

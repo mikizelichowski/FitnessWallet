@@ -11,6 +11,7 @@ enum StyleImage {
     case custom
     case categories
     case profile
+    case profileCustomer
 }
 
 class CustomImage: UIImageView {
@@ -42,7 +43,8 @@ class CustomImage: UIImageView {
             backgroundColor = .lightGray
             clipsToBounds = true
             contentMode = .scaleAspectFill
-            setDimensions(height: CGFloat(StringRepresentationOfDigit.fourty), width: CGFloat(StringRepresentationOfDigit.fourty))
+            setDimensions(height: CGFloat(StringRepresentationOfDigit.fourty),
+                          width: CGFloat(StringRepresentationOfDigit.fourty))
             layer.cornerRadius = CGFloat(StringRepresentationOfDigit.four) / CGFloat(StringRepresentationOfDigit.two)
         case .profile:
             clipsToBounds =  true
@@ -50,6 +52,48 @@ class CustomImage: UIImageView {
             backgroundColor = .lightGray
             layer.cornerRadius = Constants.cornerRadius
             setDimensions(height: Constants.height, width: Constants.width)
+        //            layer.addShadow(type: .iconButton)
+        case .profileCustomer:
+            clipsToBounds = true
+            contentMode = .scaleAspectFill
+            layer.addShadow(type: .iconButton)
+            layer.cornerRadius = Constants.cornerRadius
+            setDimensions(height: Constants.height, width: Constants.width)
+            backgroundColor = .whiteAlphaTf
         }
+    }
+    
+    func update(_ style: StyleImage) {
+        switch style {
+        case .custom:
+            clipsToBounds = true
+            contentMode = .scaleAspectFill
+            backgroundColor = .lightGray
+            self.image = image
+        case .categories:
+            tintColor = .lightGray
+            self.image = image
+            backgroundColor = .lightGray
+            clipsToBounds = true
+            contentMode = .scaleAspectFill
+            setDimensions(height: CGFloat(StringRepresentationOfDigit.fourty),
+                          width: CGFloat(StringRepresentationOfDigit.fourty))
+            layer.cornerRadius = CGFloat(StringRepresentationOfDigit.four) / CGFloat(StringRepresentationOfDigit.two)
+        case .profile:
+            clipsToBounds =  true
+            contentMode = .scaleAspectFill
+            backgroundColor = .lightGray
+            layer.cornerRadius = Constants.cornerRadius
+            setDimensions(height: Constants.height, width: Constants.width)
+        //            layer.addShadow(type: .iconButton)
+        case .profileCustomer:
+            clipsToBounds = true
+            contentMode = .scaleAspectFill
+            layer.addShadow(type: .iconButton)
+            layer.cornerRadius = Constants.cornerRadius
+            setDimensions(height: Constants.height, width: Constants.width)
+            backgroundColor = .whiteAlphaTf
+        }
+        
     }
 }

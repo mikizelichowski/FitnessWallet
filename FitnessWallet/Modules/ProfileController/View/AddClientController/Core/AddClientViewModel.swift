@@ -19,12 +19,12 @@ protocol AddClientViewModelProtocol: class {
     
     func isInputEmpty(type: InputView.InputType, isEmpty: Bool)
     func didTapDone(selectedImage: UIImage?, username: String?, surname: String?, weight: Double?, height: Double?)
-    func checkMaxLegnth(_ textView: UITextView)
 }
 
 protocol AddClientViewModelDelegate: class {
     func showLoading(_ state: Bool)
     func alertMessage(title: String, message: String)
+    func updateView(_ state: Bool)
 }
 
 final class AddClientViewModel {
@@ -38,11 +38,11 @@ final class AddClientViewModel {
     private let inputsRequired: Set<InputView.InputType> = [.username, .surname, .weight, .height]
     private var inputs: Set<InputView.InputType> = []
     
-    //    private let coordinator: ProfileCoordinatorProtocol
-    //
-    //    init(with coordinator: ProfileCoordinatorProtocol) {
-    //    self.coordinator = coordinator
-    //    }
+    private let coordinator: ProfileCoordinatorProtocol
+    
+    init(with coordinator: ProfileCoordinatorProtocol) {
+        self.coordinator = coordinator
+    }
 }
 
 extension AddClientViewModel: AddClientViewModelProtocol {
@@ -73,20 +73,14 @@ extension AddClientViewModel: AddClientViewModelProtocol {
                                           weight: weight,
                                           height: height) { error in
             self.delegate.showLoading(false)
-            if let err = error {
-                print("DEBUG: Failed to create a new Customer with error \(err.localizedDescription)")
+            if let error = error {
+                print("\(ErrorAPI.uploadData) \(error.localizedDescription)")
+                
                 return
             }
             self.delegate.alertMessage(title: Localized.Alert.AlertMessage.title,
                                        message: Localized.Alert.AlertMessage.addNewCustomer)
-            // usuwnie z textFieldow oraz zdjecie lub przechodzenie do kolejnego widoku
-        }
-        
-    }
-    // String(height)
-    func checkMaxLegnth(_ textView: UITextView) {
-        if (textView.text.count) > StringRepresentationOfDigit.twenty {
-            textView.deleteBackward()
+            self.delegate.updateView(true)
         }
     }
 }

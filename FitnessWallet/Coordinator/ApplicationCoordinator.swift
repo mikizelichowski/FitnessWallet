@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 protocol CoordinatorProtocol: class {
     func start()
@@ -19,6 +20,7 @@ protocol ApplicationParentCoordinatorProtocol {
     func showRootViewController(rootViewController: UIViewController)
     func presentLoginViewController()
     func presentMainViewController()
+    func checkIfUserIsLoggenIn()
 }
 
 final class ApplicationCoordinator: ApplicationCoordinatorProtocol {
@@ -32,8 +34,15 @@ final class ApplicationCoordinator: ApplicationCoordinatorProtocol {
     }
     
     func start() {
-        presentLoginViewController()
-        //presentMainViewController()
+        checkIfUserIsLoggenIn()
+    }
+    
+    func checkIfUserIsLoggenIn() {
+        if Auth.auth().currentUser == nil {
+            presentLoginViewController()
+        } else {
+            presentMainViewController()
+        }
     }
 }
 

@@ -9,15 +9,18 @@ import Foundation
 
 protocol ProfileViewModelProtocol: class {
     var delegate: ProfileViewModelDelegate! { get set }
+    
+    func showAddNewCustomer()
+    func showAddNewCard()
 }
 
 protocol ProfileViewModelDelegate: class {
-    
 }
 
 final class ProfileViewModel {
     weak var delegate: ProfileViewModelDelegate!
     
+    var customers: Customers?
     private let coordinate: ProfileCoordinatorProtocol
     
     init(coordinate: ProfileCoordinatorProtocol) {
@@ -26,5 +29,11 @@ final class ProfileViewModel {
 }
 
 extension ProfileViewModel: ProfileViewModelProtocol {
+    func showAddNewCustomer() {
+        coordinate.showCustomersList()
+    }
     
+    func showAddNewCard() {
+        coordinate.showAddNewPackage()
+    }
 }

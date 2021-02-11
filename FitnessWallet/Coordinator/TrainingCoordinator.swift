@@ -8,6 +8,7 @@
 import UIKit
 
 protocol TrainingCoordinatorProtocol: TabItemCoordinatorProtocol {
+    func trainingViewController()
 }
 
 final class TrainingCoordinator: TrainingCoordinatorProtocol {
@@ -20,6 +21,10 @@ final class TrainingCoordinator: TrainingCoordinatorProtocol {
     }
     
     func start(){
+        trainingViewController()
+    }
+    
+    func trainingViewController() {
         let viewModel = TrainingViewModel(coordinate: self)
         let controller = TrainingViewController(with: viewModel)
         navigationController.pushViewController(controller, animated: true)

@@ -5,13 +5,13 @@
 //  Created by Mikolaj Zelichowski on 19/01/2021.
 //
 
+#warning(" TEST -  DELETE")
+
 import UIKit
 
 class ViewBaseController: UIViewController {
-    
     private var tableView: UITableView!
     private var dataSource: DataSource!
-//    private var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +21,7 @@ class ViewBaseController: UIViewController {
     }
     
     private func configureNavBar() {
-        navigationItem.title = "Shopping List"
+        navigationItem.title = "Training List"
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditState))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(presentAddVC))
     }
@@ -31,29 +31,31 @@ class ViewBaseController: UIViewController {
         tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         tableView.backgroundColor = .systemGroupedBackground
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-//        tableView.registerCell(UITableViewCell.self)
+        tableView.delegate = self
         view.addSubview(tableView)
     }
     
     private func configureDataSource() {
         dataSource = DataSource(tableView: tableView, cellProvider: { (tableView, indexPath, item) -> UITableViewCell? in
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-            cell.textLabel?.text = "\(item.name)"
+            
+            if (item.price != nil) {
+                let formattedPrice = String(format: "%.2f", item.price ?? 0)
+                cell.textLabel?.text = "\(item.name)\nPrice: $\(formattedPrice)"
+            } else {
+                let formattedReps = String(item.reps ?? 0)
+                cell.textLabel?.text = "\(item.name)\nReps: \(formattedReps)"
+            }
+            cell.textLabel?.numberOfLines = 0
             return cell
         })
-        
-        // setup type of animation
         dataSource.defaultRowAnimation = .fade
         
-        // setup initial snapshot
         var snapshot = NSDiffableDataSourceSnapshot<Category, Items>()
-        
-        // populate snapshot with sections and items for each section
-        // CaseIterable allows us to iterate through all the cases of an enum
-        for category in Category.allCases { // all cases from the Category enum
-            // filter the testData [items] for particular category's items
+
+        for category in Category.allCases {
             let items = Items.testData().filter { $0.category == category }
-            snapshot.appendSections([category]) // add section to table View
+            snapshot.appendSections([category])
             snapshot.appendItems(items)
         }
         
@@ -70,14 +72,17 @@ class ViewBaseController: UIViewController {
     
     @objc
     private func presentAddVC() {
-        // TODO:
-        // 1. create a AddItemViewController.swift file
-        // 2. add a View Controller object
-        // 3. add 2 textfields, one for the item name and other for price
-        // 4. add a picker view to manage the categories
-        // 5. user is able to add a new item to a given category and click on a submit button
-        // 6. use any communication paradigm to get data from AddItemViewController back to the ViewController
-        // types: delegation, KVO, notification center, unwind seque, callback, combine
+        let controller = AddItemViewController()
+        navigationController?.present(controller, animated: true, completion: nil)
+    }
+}
+
+extension ViewBaseController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let client = dataSource.itemIdentifier(for: indexPath) else { return }
+        print("DEBUG: \(client.category.rawValue)")
+        print("DEBUG: \(client.name)")
     }
 }
 

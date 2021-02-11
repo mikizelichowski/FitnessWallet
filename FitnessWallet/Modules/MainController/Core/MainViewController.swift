@@ -13,8 +13,8 @@ final class MainViewController: UIViewController {
         static let sectionHeader = "supplementary-section-header"
     }
     
-    typealias DataSourceSnapshot = NSDiffableDataSourceSnapshot<Section, Model>
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, Model>
+    typealias DataSourceSnapshot = NSDiffableDataSourceSnapshot<Section, DataItem>
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, DataItem>
 
     private var collectionView: UICollectionView!
     private var dataSource: DataSource!
@@ -35,29 +35,64 @@ final class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.backgroundColor = .black
         createLayout()
         viewModel.onViewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        view.backgroundColor = .black
+        setupNavigationController(backgroundColor: .clear)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        setupNavigationController(false)
+    }
+    
+    private func createLayout() {
+        let layout = LayoutManager().createLayout()
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
+        view.addSubview(collectionView)
+        collectionView.delegate = self
+        collectionView.fillSuperViewArea()
+        collectionView.backgroundColor = .black
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        populateData()
+        refresher()
+    }
+    
+    private func refresher() {
+        let refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        collectionView.refreshControl = refresher
+    }
+    
+    @objc
+    private func handleRefresh() {
+        viewModel.send(action: .refreshView(true))
+    }
+}
+
+extension MainViewController {
     private func populateData() {
-        let exercisesListCellRegistration = UICollectionView.CellRegistration<ExercisesCell, Model> {
+        let exercisesListCellRegistration = UICollectionView.CellRegistration<ExercisesCell, DataItem> {
             cell, indexPath, dataItem in
-            if case .exercises(let exercises) = dataItem.dataItem {
+            if case .exercises(let exercises) = dataItem {
                 cell.populate(with: exercises)
             }
         }
         
-        let customersListCellRegistration = UICollectionView.CellRegistration<CustomersCell, Model> {
+        let customersListCellRegistration = UICollectionView.CellRegistration<CustomersCell, DataItem> {
             cell, indexPath, dataItem in
-            if case .customers(let customers) = dataItem.dataItem {
+            if case .customers(let customers) = dataItem {
                 cell.populate(with: customers)
             }
         }
         
-        let remainingCellRegistration = UICollectionView.CellRegistration<RemainingCell, Model> {
+        let remainingCellRegistration = UICollectionView.CellRegistration<RemainingCell, DataItem> {
             cell, indexPath, dataItem in
-            if case .remaining(let remaining) = dataItem.dataItem {
+            if case .remaining(let remaining) = dataItem {
                 cell.populate(with: remaining)
             }
         }
@@ -92,51 +127,24 @@ final class MainViewController: UIViewController {
             }
         }
     }
-    
-    private func createLayout() {
-        let layout = LayoutManager().createLayout()
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
-//        collectionView.backgroundColor = //.systemBackground
-        view.addSubview(collectionView)
-        collectionView.fillSuperView()  //fillSuperViewArea()
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        populateData()
-        refresher()
-    }
-    
-    private func refresher() {
-        let refresher = UIRefreshControl()
-        refresher.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
-        collectionView.refreshControl = refresher
-    }
-    
-    @objc
-    private func handleRefresh() {
-        viewModel.send(action: .refreshView(true))
-    }
 }
 
 extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         guard let customer = dataSource.itemIdentifier(for: indexPath) else { return }
-        
+        viewModel.didTapCollectionViewCell(customer)
+        print("DEBUG: did tap training \(customer)")
     }
 }
 
 extension MainViewController: MainViewModelDelegate {
-    func udpateDataSource(_ dataSource: [SectionModel]) {
-        // nie wiem, sprawdzic i rozwiazac ten problem....
-    }
-    
     func updateSnapshot(clients: [Customers]) {
+        snapshot.deleteAllItems()
         snapshot.appendSections(Section.allCases)
-        snapshot.appendItems(clients.map { Model(dataItem: .exercises($0))}, toSection: .training)
-        snapshot.appendItems(clients.map { Model(dataItem: .customers($0))}, toSection: .customerList)
-        snapshot.appendItems(clients.map { Model(dataItem: .remaining($0))}, toSection: .remaining)
-        
-        // sprawdzic jutro
-//        snapshot.reloadSections([SectionModel(style: .customerList))
+        snapshot.appendItems(clients.map { DataItem.exercises($0)}, toSection: .training)
+        snapshot.appendItems(clients.map { DataItem.customers($0)}, toSection: .customerList)
+        snapshot.appendItems(clients.map { DataItem.remaining($0)}, toSection: .remaining)
         self.dataSource.apply(self.snapshot, animatingDifferences: true)
     }
     

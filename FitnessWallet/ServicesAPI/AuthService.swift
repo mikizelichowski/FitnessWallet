@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseAuth
 import FirebaseFirestore
 
 struct AuthCredentials {
@@ -48,7 +48,10 @@ struct AuthService {
             try Auth.auth().signOut()
             userID = nil
         } catch {
-            print("DEBUG: Error signing out.. \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                // show alert
+                print("DEBUG: Error signing out.. \(error.localizedDescription)")
+            }
         }
     }
     

@@ -103,4 +103,11 @@ extension UIView {
         layer.addSublayer(gradient)
         gradient.frame = frame
     }
+    
+    func showMessage(withTitle title: String, message: String, completion: (()->Void)?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: nil))
+        let navigation = UIViewController()
+        navigation.present(alert, animated: true, completion: completion)
+    }
 }

@@ -12,7 +12,6 @@ protocol NotificationViewModelProtocol: class {
 }
 
 protocol NotificationViewModelDelegate: class {
-    
 }
 
 final class NotificationViewModel {
@@ -23,9 +22,7 @@ final class NotificationViewModel {
     init(coordinate: NotificationCoordinatorProtocol) {
         self.coordinate = coordinate
     }
-    
 }
 
 extension NotificationViewModel: NotificationViewModelProtocol {
-    
 }

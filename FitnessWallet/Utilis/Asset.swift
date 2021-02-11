@@ -47,6 +47,10 @@ internal enum Asset {
     internal static let search_selected = ImageAsset(name: "search_selected")
     internal static let search_unselected = ImageAsset(name: "search_unselected")
     internal static let upload_image_icon = ImageAsset(name: "upload_image_icon")
+    internal static let dollarsign_circle = ImageAsset(name: "dollarsign.circle")
+    internal static let pencil_and_ellipsis = ImageAsset(name: "pencil.and.ellipsis.rectangle")
+    internal static let flame = ImageAsset(name: "flame")
+    internal static let chart_pie = ImageAsset(name: "chart.pie")
 }
 
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

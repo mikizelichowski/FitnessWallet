@@ -33,8 +33,7 @@ final class CustomersCell: UICollectionViewCell {
     private func configureLayout() {
         backgroundView = UIView()
         backgroundView?.backgroundColor = .white
-        backgroundView?.layer.addShadow(type: .cell)
-        backgroundView?.layer.cornerRadius = CGFloat(StringRepresentationOfDigit.eight)
+        backgroundView?.layer.addShadow(type: .iconButton)
         backgroundView?.layer.masksToBounds = true
         
         separator.backgroundColor = .quaternaryLabel

@@ -9,6 +9,7 @@ import Firebase
 
 struct Customers: Hashable, Equatable, Identifiable {
     let identifier = UUID()
+    let customerId: String
     let username: String
     let surname: String
     var weight: Double
@@ -17,6 +18,7 @@ struct Customers: Hashable, Equatable, Identifiable {
     let timestamp: Timestamp
     
     init(dictionary: [String: Any]) {
+        self.customerId = dictionary[Endpoint.Customer.customerId] as? String ?? .empty
         self.username = dictionary["username"] as? String ?? .empty
         self.surname = dictionary["surname"] as? String ?? .empty
         self.weight = dictionary["weight"] as? Double ?? 0
@@ -28,7 +30,6 @@ struct Customers: Hashable, Equatable, Identifiable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(identifier)
     }
-    
     
     static func == (left: Customers, right: Customers) -> Bool {
         left.identifier == right.identifier

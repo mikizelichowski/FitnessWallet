@@ -5,7 +5,7 @@
 //  Created by Mikolaj Zelichowski on 16/12/2020.
 //
 
-import Foundation
+import UIKit
 
 protocol TabItemCoordinatorProtocol: CoordinatorProtocol {
     init(coordinator: MainCoordinatorProtocol, navigationController: TabBarNavigationController)
@@ -55,5 +55,4 @@ final class MainCoordinator: MainCoordinatorProtocol {
             return ProfileCoordinator(coordinator: self, navigationController: navigationController)
         }
     }
-    
 }

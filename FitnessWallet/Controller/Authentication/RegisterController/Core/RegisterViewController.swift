@@ -41,7 +41,7 @@ final class RegisterViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func configureLayout() {
         view.backgroundColor = .white
         setupLabels()
@@ -103,7 +103,6 @@ final class RegisterViewController: UIViewController {
 
 extension RegisterViewController: RegisterViewModelDelegate {
     func updateForm() {
-    
     }
     
     func showLoading(_ state: Bool) {
@@ -111,6 +110,6 @@ extension RegisterViewController: RegisterViewModelDelegate {
     }
     
     func showAlertMessage(_ title: String, message: String) {
-        showMessage(withTitle: title, message: message)
+        showMessage(withTitle: title, message: message, completion: nil)
     }
 }

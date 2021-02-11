@@ -46,8 +46,12 @@ final class AddClientController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.backgroundColor = .white
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didTapCancel))
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.isHidden = false
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle { .default }
@@ -57,54 +61,7 @@ final class AddClientController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    private func setupLayout() {
-        
-        setupLabel()
-        setupButton()
-        view.backgroundColor = .white
-        
-        // MARK: - ImageView
-        [photoAddButton,contentscrollView, confirmButton].forEach { view.addSubview($0)}
-        photoAddButton.centerX(inView: view)
-        photoAddButton.anchor(top: view.safeAreaLayoutGuide.topAnchor,
-                              paddingTop: CGFloat(StringRepresentationOfDigit.thirty))
-        // MARK: - ScrollView
-        contentscrollView.addSubview(contentStackView)
-        contentscrollView.alwaysBounceVertical = true
-        contentscrollView.indicatorStyle = .black
-        contentscrollView.isScrollEnabled = true
-        contentscrollView.adjustedContentInsetDidChange()
-        contentscrollView.anchor(top: photoAddButton.bottomAnchor,
-                                left: view.safeAreaLayoutGuide.leftAnchor,
-                                right: view.safeAreaLayoutGuide.rightAnchor,
-                                paddingTop: CGFloat(StringRepresentationOfDigit.thirty))
-        
-        // MARK: - Content StackView
-        [userTextView,surnameTextView, weightTextView, heightTextView].forEach {
-            contentStackView.addArrangedSubview($0)
-            $0.setDimensions(height: Constants.textViewHeight, width: Constants.textViewWidth)
-        }
-        contentStackView.axis = .vertical
-        contentStackView.spacing = CGFloat(StringRepresentationOfDigit.thirty)
-        contentStackView.distribution = .fillEqually
-        contentStackView.anchor(top: contentscrollView.topAnchor,
-                                left: contentscrollView.leftAnchor,
-                                right: contentscrollView.rightAnchor,
-                                paddingTop: CGFloat(StringRepresentationOfDigit.ten),
-                                paddingLeft: CGFloat(StringRepresentationOfDigit.sixteen),
-                                paddingRight: CGFloat(StringRepresentationOfDigit.sixteen))
-        confirmButton.anchor(top: contentscrollView.bottomAnchor,
-                            left: view.safeAreaLayoutGuide.leftAnchor,
-                             bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                             right: view.safeAreaLayoutGuide.rightAnchor,
-                             paddingTop: CGFloat(StringRepresentationOfDigit.twelve),
-                             paddingLeft: CGFloat(StringRepresentationOfDigit.sixteen),
-                             paddingBottom: CGFloat(StringRepresentationOfDigit.twenty),
-                             paddingRight: CGFloat(StringRepresentationOfDigit.sixteen))
-    }
-    
     private func setupLabel() {
-        
         userTextView.update(renderable: viewModel.usernameRenderable )
         userTextView.isEmptyClosure = viewModel.isInputEmpty
         surnameTextView.update(renderable: viewModel.surnameRenderable)
@@ -121,7 +78,7 @@ final class AddClientController: UIViewController {
         photoAddButton.setDimensions(height: Constants.photoImageHeight, width: Constants.photoImageWidth)
         photoAddButton.layer.borderColor = UIColor.blueDark.cgColor
         photoAddButton.layer.borderWidth = CGFloat(StringRepresentationOfDigit.one)
-        photoAddButton.layer.cornerRadius = 12.0
+        photoAddButton.layer.cornerRadius = CGFloat(StringRepresentationOfDigit.twelve)
         photoAddButton.layer.addShadow(type: .alert)
         photoAddButton.addTarget(self, action: #selector(handleProfilePhotoSelect), for: .touchUpInside)
         photoAddButton.setImage(UIImage(named:Asset.upload_image_icon.name), for: .normal)
@@ -135,7 +92,7 @@ final class AddClientController: UIViewController {
     
     @objc
     private func handleProfilePhotoSelect() {
-     let picker = UIImagePickerController()
+        let picker = UIImagePickerController()
         picker.delegate = self
         picker.allowsEditing = true
         present(picker, animated: true, completion: nil)
@@ -149,16 +106,62 @@ final class AddClientController: UIViewController {
                              weight: Double(weightTextView.text ?? .empty),
                              height: Double(heightTextView.text ?? .empty))
     }
-
 }
 
-extension AddClientController: AddClientViewModelDelegate {
+extension AddClientController {
+    private func setupLayout() {
+        setupLabel()
+        setupButton()
+        view.backgroundColor = .white
+        
+        // MARK: - ImageView
+        [photoAddButton,contentscrollView, confirmButton].forEach { view.addSubview($0)}
+        photoAddButton.centerX(inView: view)
+        photoAddButton.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                              paddingTop: CGFloat(StringRepresentationOfDigit.thirty))
+        // MARK: - ScrollView
+        contentscrollView.addSubview(contentStackView)
+        contentscrollView.alwaysBounceVertical = true
+        contentscrollView.indicatorStyle = .black
+        contentscrollView.isScrollEnabled = true
+        contentscrollView.adjustedContentInsetDidChange()
+        contentscrollView.anchor(top: photoAddButton.bottomAnchor,
+                                 left: view.safeAreaLayoutGuide.leftAnchor,
+                                 right: view.safeAreaLayoutGuide.rightAnchor,
+                                 paddingTop: CGFloat(StringRepresentationOfDigit.thirty))
+        
+        // MARK: - Content StackView
+        [userTextView,surnameTextView, weightTextView, heightTextView].forEach {
+            contentStackView.addArrangedSubview($0)
+            $0.setDimensions(height: Constants.textViewHeight, width: Constants.textViewWidth)
+        }
+        contentStackView.axis = .vertical
+        contentStackView.spacing = CGFloat(StringRepresentationOfDigit.thirty)
+        contentStackView.distribution = .fillEqually
+        contentStackView.anchor(top: contentscrollView.topAnchor,
+                                left: contentscrollView.leftAnchor,
+                                right: contentscrollView.rightAnchor,
+                                paddingTop: CGFloat(StringRepresentationOfDigit.ten),
+                                paddingLeft: CGFloat(StringRepresentationOfDigit.sixteen),
+                                paddingRight: CGFloat(StringRepresentationOfDigit.sixteen))
+        confirmButton.anchor(top: contentscrollView.bottomAnchor,
+                             left: view.safeAreaLayoutGuide.leftAnchor,
+                             bottom: view.safeAreaLayoutGuide.bottomAnchor,
+                             right: view.safeAreaLayoutGuide.rightAnchor,
+                             paddingTop: CGFloat(StringRepresentationOfDigit.twelve),
+                             paddingLeft: CGFloat(StringRepresentationOfDigit.sixteen),
+                             paddingBottom: CGFloat(StringRepresentationOfDigit.twenty),
+                             paddingRight: CGFloat(StringRepresentationOfDigit.sixteen))
+    }
+}
+
+extension AddClientController: AddClientViewModelDelegate {    
     func showLoading(_ state: Bool) {
         showLoader(state)
     }
     
     func alertMessage(title: String, message: String) {
-        showMessage(withTitle: title, message: message)
+        showMessage(withTitle: title, message: message, completion: nil)
     }
     
     func updateForm() {
@@ -166,18 +169,20 @@ extension AddClientController: AddClientViewModelDelegate {
             surnameTextView.text!.isEmpty &&
             weightTextView.text!.isEmpty &&
             heightTextView.text?.isEmpty == false {
-//            confirmButton.isEnabled = viewModelAuthentication.formIsValid == true
+            //confirmButton.isEnabled = viewModelAuthentication.formIsValid == true
         } else {
             //confirmButton.isEnabled = viewModelAuthentication.formIsValid == false
         }
     }
-}
-
-extension AddClientController: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
-//        viewModel.checkMaxLegnth(textView)
-//        let count = textView.text.count
-//        characterCountLabel.text = "\(count)/\(StringRepresentationOfDigit.twenty)"
+    
+    func updateView(_ state: Bool) {
+        if state == true {
+            userTextView.text = .empty
+            surnameTextView.text = .empty
+            weightTextView.text = .empty
+            heightTextView.text = .empty
+            photoAddButton.setImage(Asset.upload_image_icon.image, for: .normal)
+        }
     }
 }
 

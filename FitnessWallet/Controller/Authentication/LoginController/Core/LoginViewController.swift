@@ -11,6 +11,8 @@ final class LoginViewController: UIViewController {
     private enum Constants {
         static let marginLeftRight: CGFloat = 32.0
         static let marginTop: CGFloat = 50.0
+        static let heigthInput: CGFloat = 50.0
+        static let widthInput: CGFloat = 300.0
     }
     
     private let loginInput = InputView()
@@ -19,7 +21,7 @@ final class LoginViewController: UIViewController {
     private let resetPasswordButton = UIButton()
     private let dontHaveAccountButton = UIButton()
     private var loginButton: RoundedButton = {
-       let button = RoundedButton()
+        let button = RoundedButton()
         button.addTarget(self, action: #selector(handleLoginDidTap), for: .touchUpInside)
         return button
     }()
@@ -52,7 +54,7 @@ final class LoginViewController: UIViewController {
         setupLabels()
         setupButtons()
         [loginInput, passwordInput].forEach { containerStackView.addArrangedSubview($0)
-            $0.setDimensions(height: 50, width: 300)
+            $0.setDimensions(height: Constants.heigthInput, width: Constants.widthInput)
         }
         containerStackView.axis = .vertical
         containerStackView.spacing = CGFloat(StringRepresentationOfDigit.thirty)
@@ -82,7 +84,7 @@ final class LoginViewController: UIViewController {
     }
     
     private func setupLabels() {
-
+        
         loginInput.update(renderable: viewModel.loginRenderable)
         loginInput.isEmptyClosure = viewModel.isInputEmpty
         loginInput.setupKeyboard(.emailAddress)
@@ -117,11 +119,9 @@ final class LoginViewController: UIViewController {
         viewModel.login(email: loginInput.text, password: passwordInput.text)
     }
     
-    
     @objc
     private func handleTappedPasswordButton() {
         viewModel.showResetPasswordView()
-        // create Reset Password later..
     }
     
     @objc
@@ -134,7 +134,7 @@ extension LoginViewController: LoginViewModelDelegate {
     func showLoading(_ state: Bool) {
         showLoader(state)
     }
-    // fix bug later.. and add Error alert
+    #warning("// fix bug later.. and add Error alert")
     func updateForm() {
         if loginInput.text!.isEmpty && passwordInput.text?.isEmpty == false {
             loginButton.isEnabled = viewModelAuthentication.formIsValid == true

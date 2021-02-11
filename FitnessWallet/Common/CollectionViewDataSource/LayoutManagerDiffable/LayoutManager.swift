@@ -32,7 +32,6 @@ struct LayoutManager {
     }
     
     func createLayout() -> UICollectionViewLayout {
-        
         let layout = UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
             guard let sectionKind = Section(rawValue: sectionIndex) else {
                 fatalError("Undefined section for value: \(sectionIndex)")
@@ -54,7 +53,8 @@ struct LayoutManager {
     // MARK: - Section Title
     
     func createSectionHeaderSupplementary() -> NSCollectionLayoutBoundarySupplementaryItem {
-        let headerItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(Constants.fractionWidthOne), heightDimension: .absolute(Constants.sectionHeaderHight))
+        let headerItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(Constants.fractionWidthOne),
+                                                    heightDimension: .absolute(Constants.sectionHeaderHight))
         let headerSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerItemSize, elementKind: ReuseIdentifier.SupplementaryElementKind.sectionHeader, alignment: .top)
         return headerSupplementary
     }
@@ -73,11 +73,16 @@ struct LayoutManager {
     }
     
     func createCustomerList() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(Constants.fractionWidthOne), heightDimension: .fractionalHeight(Constants.fractionHeightOne))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(Constants.fractionWidthOne),
+                                              heightDimension: .fractionalHeight(Constants.fractionHeightOne))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: Constants.marginTop, leading: Constants.marginLeft, bottom: Constants.marginBottom, trailing: Constants.marginRight)
+        item.contentInsets = NSDirectionalEdgeInsets(top: Constants.marginTop,
+                                                     leading: Constants.marginLeft,
+                                                     bottom: Constants.marginBottom,
+                                                     trailing: Constants.marginRight)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(Constants.customerGroupSizeWidth), heightDimension: .estimated(Constants.customerGroupSizeHeight))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(Constants.customerGroupSizeWidth),
+                                               heightDimension: .estimated(Constants.customerGroupSizeHeight))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)
@@ -89,14 +94,16 @@ struct LayoutManager {
     }
     
     func createRemainingSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(Constants.fractionWidthOne), heightDimension: .fractionalHeight(Constants.fractionHeightOne))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(Constants.fractionWidthOne),
+                                              heightDimension: .fractionalHeight(Constants.fractionHeightOne))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = NSDirectionalEdgeInsets(top: CGFloat(StringRepresentationOfDigit.two),
                                                      leading: CGFloat(StringRepresentationOfDigit.four),
                                                      bottom: CGFloat(StringRepresentationOfDigit.two),
                                                      trailing: CGFloat(StringRepresentationOfDigit.four))
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(Constants.fractionWidthOne), heightDimension: .estimated(CGFloat(StringRepresentationOfDigit.hundred)))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(Constants.fractionWidthOne),
+                                               heightDimension: .estimated(CGFloat(StringRepresentationOfDigit.hundred)))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
         let section = NSCollectionLayoutSection(group: group)

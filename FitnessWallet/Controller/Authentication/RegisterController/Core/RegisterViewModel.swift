@@ -67,7 +67,8 @@ extension RegisterViewModel: RegisterViewModelProtocol {
         AuthService.registerUser(withCredentials: credentials) { error in
             self.delegate.showLoading(false)
             if let error = error {
-                print("DEBUG: Failed to register user \(error.localizedDescription)")
+                print("\(ErrorAPI.register) \(error.localizedDescription)")
+                
                 return
             }
             self.delegate.showAlertMessage(Localized.Alert.AlertMessage.title, message: Localized.Alert.AlertMessage.registerAlert)
@@ -82,5 +83,5 @@ extension RegisterViewModel: RegisterViewModelProtocol {
     func showLoginView() {
         coordinator.showLoginController()
     }
-
+    
 }

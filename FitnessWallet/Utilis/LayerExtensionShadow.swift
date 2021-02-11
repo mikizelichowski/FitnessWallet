@@ -14,6 +14,7 @@ extension CALayer {
         case alert
         case overlayContainer
         case acceptButton
+        case iconButton
     }
     
     func addShadow(type: ShadowType) {
@@ -50,6 +51,13 @@ extension CALayer {
             shadowColor = UIColor.dashboardTicketsViewCellShadow.cgColor
             shadowOpacity = 0.5
             shadowRadius = 8.0
+        case .iconButton:
+            masksToBounds = false
+            shadowOffset = CGSize(width: 0, height: 0)
+            cornerRadius = 12.0
+            shadowOpacity = 2.0
+            shadowRadius = 4.0
+            shadowColor = UIColor.dashboardTicketsViewCellShadow.cgColor
         }
     }
 }

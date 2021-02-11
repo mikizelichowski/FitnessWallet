@@ -12,7 +12,6 @@ protocol TrainingViewModelProtocol: class {
 }
 
 protocol TrainingViewModelDelegate: class {
-    
 }
 
 final class TrainingViewModel {

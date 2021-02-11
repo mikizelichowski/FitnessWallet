@@ -10,6 +10,7 @@ import UIKit
 enum StyleLabel {
     case title
     case subtitle
+    case largeTitle
 }
 
 class CustomLabel: UILabel {
@@ -36,7 +37,12 @@ class CustomLabel: UILabel {
             textColor = .lightGray
             font = .font(with: .thin, size: .normal)
             textAlignment = .left
-            numberOfLines = 0
+            numberOfLines = .zero
+        case .largeTitle:
+            text = title
+            textColor = .black
+            numberOfLines = .zero
+            font = .font(with: .medium, size: .medium)
         }
     }
     
@@ -53,7 +59,12 @@ class CustomLabel: UILabel {
             textColor = .lightGray
             font = .font(with: .thin, size: .normal)
             textAlignment = .left
-            numberOfLines = 0
+            numberOfLines = .zero
+        case .largeTitle:
+            text = title
+            textColor = .black
+            numberOfLines = .zero
+            font = .font(with: .light, size: .large)
         }
     }
 }

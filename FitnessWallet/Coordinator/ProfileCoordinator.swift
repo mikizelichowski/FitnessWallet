@@ -5,9 +5,13 @@
 //  Created by Mikolaj Zelichowski on 17/12/2020.
 //
 
+import UIKit
+
 protocol ProfileCoordinatorProtocol: TabItemCoordinatorProtocol {
     func showAddNewCustomer()
+    func showCustomersList()
     func showProfileController()
+    func showAddNewPackage()
 }
 
 final class ProfileCoordinator: ProfileCoordinatorProtocol {
@@ -20,20 +24,32 @@ final class ProfileCoordinator: ProfileCoordinatorProtocol {
     }
     
     func start(){
-        showAddNewCustomer()
+        showProfileController()
     }
 }
 
 extension ProfileCoordinator {
-    func showAddNewCustomer() {
-        let viewModel = AddClientViewModel()
-        let controller = AddClientController(with: viewModel)
-        navigationController.pushViewController(controller, animated: true)
-    }
-    
     func showProfileController() {
         let viewModel = ProfileViewModel(coordinate: self)
         let controller = ProfileViewController(with: viewModel)
         navigationController.pushViewController(controller, animated: true)
+    }
+    
+    func showCustomersList() {
+        let viewModel = CustomerListViewModel(with: self)
+        let controller = CustomerListViewController(with: viewModel)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    func showAddNewCustomer() {
+        let viewModel = AddClientViewModel(with: self)
+        let controller = AddClientController(with: viewModel)
+        navigationController.present(controller, animated: true)
+    }
+    
+    func showAddNewPackage() {
+        let viewModel = AddNewPackageViewModel(with: self)
+        let controller = AddNewPackageController(with: viewModel)
+        navigationController.present(controller, animated: true)
     }
 }

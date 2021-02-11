@@ -20,7 +20,6 @@ struct User: Hashable {
     let username: String
     let uid: String
     let profileImageUrl: String
-    
     var stats: UserStats!
     
     var isCurrentUser: Bool {

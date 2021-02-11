@@ -91,6 +91,4 @@ extension InformationAlertControllerViewModel: InformationControllerViewModelPro
     func touchDidTap() {
         touchHandler?()
     }
-    
-    
 }
